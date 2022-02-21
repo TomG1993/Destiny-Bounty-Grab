@@ -1,5 +1,6 @@
 ﻿
 // See https://aka.ms/new-console-template for more information
+using Destiny_Bounty_Grab.Services;
 using Newtonsoft.Json;
 using System.Net;
 
@@ -10,24 +11,22 @@ namespace Destiny_Bounty_Grab
         static void Main()
         {
             const string baseUri = "https://www.bungie.net/platform/";
+            const string destinyUri = "https://www.bungie.net/platform/Destiny2/";
+            const string authUri = "https://www.bungie.net/en/oauth/";
 
-            // Uses JSON.NET - http://www.nuget.org/packages/Newtonsoft.Json
-            //using (var client = new HttpClient())
-            //{
-            //    client.DefaultRequestHeaders.Add("X-API-Key", "7fa7a3ab0ffb44308e112a6ba16ec7c2");
+            //var dc = new DestinyCheck();
+            //var result = dc.GetGroup("Valus Ta'aurc the real m9", baseUri);
 
-            //    var response = client.GetAsync("https://www.bungie.net/platform/Destiny/Manifest/InventoryItem/1274330687/").Result;
-            //    var content = response.Content.ReadAsStringAsync().Result;
-            //    dynamic item = Newtonsoft.Json.JsonConvert.DeserializeObject(content);
+            var authService = new AuthService();
+            authService.Auth(authUri);
 
-            //    Console.WriteLine(item.Response.data.inventoryItem.itemName); //Gjallarhorn
-            //}
+            var userSerivce = new UserService();
+            var profile = userSerivce.GetCharacters(destinyUri);
 
+            var vendorService = new VendorService();
+            var vendors = vendorService.GetVendors(destinyUri);
 
-            var dc = new DestinyCheck();
-            var result = dc.GetGroup("Valus Ta'aurc the real m9", baseUri);
-
-            Console.WriteLine(result.Result);
+            Console.WriteLine(profile);
 
             Console.ReadLine();
         }
